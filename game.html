@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<HTML>
+	<HEAD>
+		<Title> Welcom to snake! </Title>
+		<script src="jquery-2.1.1.js"></script>
+		<link href="styles.css" rel="stylesheet">
+	</HEAD>
+
+	<Body>
+		<center>
+            <h1>
+                <div class ="scope" id="title">snake</div>
+            </h1>
+		</center>
+		<hr>
+		<center>
+			<table>
+				<tr>
+					<td>
+						<div class="array" id='content'>
+						<!-- game array-->
+						</div>
+					</td>
+					<td valign="top">
+						<div class ="scope" id="scope"></div>
+					</td>
+				</tr>
+			</table>
+		</center>
+
+		<script type="text/javascript">
+			var snake=[{x:2,y:2},{x:1,y:2}];
+			var content    = $('#content');
+			var dirrection = 'right';
+			var scope = 0;
+			var needApple = true;
+			var apple_x = 20;
+			var apple_y = 5;
+
+			function drow()
+			{
+				//array snake
+				var x=snake[0].x;
+				var y=snake[0].y;
+
+				//chose direction
+				switch (dirrection)
+				{
+					case 'up'   : y--;			break;
+					case 'down' : y++;			break;
+					case 'right': x++;			break;
+					case 'left' : x--;			break;
+					case 'stop' : x = 0; y=0; 	break;
+					default : 					break;
+				}
+
+				// move snake
+				for(var i = snake.length-1; i>0;i--)
+				{
+					snake[i]=snake[i-1];
+				}
+				snake[0]={x:x,y:y};
+
+				//wall
+				if ((x == 50)||(y==50)||(y==-1)||(x==-1)) {
+					document.write("<img src='http://www.isaiahhankel.com/wp-content/uploads/2013/05/Dead-End-Sign-Making-Money.jpg'></img>");
+				}
+
+				//create apple
+				if (needApple){
+					apple_x = -1*parseInt(Math.random() * (3 - 48));
+					apple_y = -1*parseInt(Math.random() * (3 - 48));
+
+					needApple = false;
+				}
+
+				//eat apple
+				if ((snake[0].x==apple_x )&&(snake[0].y==apple_y )) {
+					needApple = true;
+					scope++;
+					snake.length++;
+				}
+
+				//win
+				if (scope==310) document.write("<img src='http://2.bp.blogspot.com/-z7_7InsTIzs/UD__Sbe24GI/AAAAAAAAGE0/k3HLnywIelM/s1600/win150.jpg'></img>");
+
+				//eat himself
+				for(var i = 1; i<snake.length;i++)
+				{
+					if ((snake[0].x == snake[i].x) && ((snake[0].y == snake[i].y)))
+					document.write("<img src='http://www.isaiahhankel.com/wp-content/uploads/2013/05/Dead-End-Sign-Making-Money.jpg'></img>");
+				}
+
+				content.html('');
+
+				var snBody = $("<div class = 'snake-body snake-head'>");
+				snBody.css('top',snake[0].y*10);
+				snBody.css('left',snake[0].x*10);
+				content.append(snBody);
+
+				for(var i = 1; i<snake.length;i++)
+				{
+					var current=snake[i];
+					var snBody = $("<div class = 'snake-body'>");
+					snBody.css('top', current.y*10);
+					snBody.css('left',current.x*10);
+					content.append(snBody);
+				}
+
+				var apple = $("<div class = 'apple'>");
+				apple.css('top', apple_y*10);
+				apple.css('left', apple_x*10);
+				content.append(apple);
+
+				$("#scope").html('<b> scope ' + scope + '/310</b>');
+			}
+
+			$(window).keydown(function(event){ // keyboard alerts
+				switch (event.keyCode) {
+					case 38: // Up key 87
+							if (dirrection=='down') dirrection='down';
+							else dirrection = 'up';
+						break;
+					case 40: // Down key83
+						if (dirrection=='up') dirrection='up';
+						else dirrection = 'down';
+						break;
+					case 37: // Left key 65
+						if (dirrection=='right') dirrection='right';
+						else dirrection = 'left';
+						break;
+					case 39: // Right key 68
+						if (dirrection=='left') dirrection='left';
+						else dirrection = 'right';
+						break;
+				}
+			});
+
+			setInterval(drow, 100);
+		</script>
+	</Body>
+</HTML>
