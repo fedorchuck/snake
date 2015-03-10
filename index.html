@@ -50,8 +50,10 @@
 
             function newGame()
             {
+                $("#scope").html('score ' + scope + '/310');
                 $('#dead-end').hide();
                 $('#win').hide();
+
             }
 
 			var snake=[{x:2,y:2},{x:1,y:2}];
@@ -89,6 +91,7 @@
 				//wall
 				if ((x == 50)||(y==50)||(y==-1)||(x==-1))
                 {
+                    scope = 0;
                     $('#dead-end').show();
                     snake=[{x:2,y:2},{x:1,y:2}];
                     dirrection = 'right';
@@ -112,6 +115,7 @@
 				//win
 				if (scope==310)
                 {
+                    scope = 0;
                     $('#win').show();
                     snake=[{x:2,y:2},{x:1,y:2}];
                     dirrection = 'right';
@@ -122,6 +126,7 @@
 				{
 					if ((snake[0].x == snake[i].x) && ((snake[0].y == snake[i].y)))
                     {
+                        scope = 0;
                         $('#dead-end').show();
                         snake=[{x:2,y:2},{x:1,y:2}];
                         dirrection = 'right';
