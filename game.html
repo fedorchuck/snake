@@ -7,12 +7,12 @@
 	</HEAD>
 
 	<Body>
-		<center>
+    <center>
             <h1>
                 <div class ="scope" id="title">snake</div>
             </h1>
 		</center>
-		<hr>
+		<!--<hr>-->
 		<center>
 			<table>
 				<tr>
@@ -21,14 +21,39 @@
 						<!-- game array-->
 						</div>
 					</td>
-					<td valign="top">
-						<div class ="scope" id="scope"></div>
-					</td>
 				</tr>
+                <td valign="bottom" align="right">
+                    <div class ="scope" id="scope"></div>
+                </td>
 			</table>
-		</center>
+        </center>
+
+        <div class="center hidden" id="dead-end">
+        <center>
+            <img src='http://www.isaiahhankel.com/wp-content/uploads/2013/05/Dead-End-Sign-Making-Money.jpg' alt='dead-end'>
+            <center>
+                <input type="submit" onclick="newGame()" value="new game" id="submit" />
+            </center>
+        </center>
+        </div>
+
+        <div class="center hidden" id="win">
+            <center>
+                <img src='http://2.bp.blogspot.com/-z7_7InsTIzs/UD__Sbe24GI/AAAAAAAAGE0/k3HLnywIelM/s1600/win150.jpg' alt='win'>
+                <center>
+                    <input type="submit" onclick="newGame()" value="new game" id="submit" />
+                </center>
+            </center>
+        </div>
 
 		<script type="text/javascript">
+
+            function newGame()
+            {
+                $('#dead-end').hide();
+                $('#win').hide();
+            }
+
 			var snake=[{x:2,y:2},{x:1,y:2}];
 			var content    = $('#content');
 			var dirrection = 'right';
@@ -62,8 +87,11 @@
 				snake[0]={x:x,y:y};
 
 				//wall
-				if ((x == 50)||(y==50)||(y==-1)||(x==-1)) {
-					document.write("<img src='http://www.isaiahhankel.com/wp-content/uploads/2013/05/Dead-End-Sign-Making-Money.jpg'></img>");
+				if ((x == 50)||(y==50)||(y==-1)||(x==-1))
+                {
+                    $('#dead-end').show();
+                    snake=[{x:2,y:2},{x:1,y:2}];
+                    dirrection = 'right';
 				}
 
 				//create apple
@@ -82,13 +110,22 @@
 				}
 
 				//win
-				if (scope==310) document.write("<img src='http://2.bp.blogspot.com/-z7_7InsTIzs/UD__Sbe24GI/AAAAAAAAGE0/k3HLnywIelM/s1600/win150.jpg'></img>");
+				if (scope==310)
+                {
+                    $('#win').show();
+                    snake=[{x:2,y:2},{x:1,y:2}];
+                    dirrection = 'right';
+                }
 
 				//eat himself
 				for(var i = 1; i<snake.length;i++)
 				{
 					if ((snake[0].x == snake[i].x) && ((snake[0].y == snake[i].y)))
-					document.write("<img src='http://www.isaiahhankel.com/wp-content/uploads/2013/05/Dead-End-Sign-Making-Money.jpg'></img>");
+                    {
+                        $('#dead-end').show();
+                        snake=[{x:2,y:2},{x:1,y:2}];
+                        dirrection = 'right';
+                    }
 				}
 
 				content.html('');
@@ -112,7 +149,7 @@
 				apple.css('left', apple_x*10);
 				content.append(apple);
 
-				$("#scope").html('<b> scope ' + scope + '/310</b>');
+				$("#scope").html('score ' + scope + '/310');
 			}
 
 			$(window).keydown(function(event){ // keyboard alerts
@@ -136,7 +173,7 @@
 				}
 			});
 
-			setInterval(drow, 100);
+            setInterval(drow, 100);
 		</script>
 	</Body>
 </HTML>
